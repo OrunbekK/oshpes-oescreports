@@ -5,6 +5,7 @@ import PrimeVue from 'primevue/config'
 import Aura from '@primevue/themes/aura'
 import { definePreset } from '@primevue/themes'
 
+import 'primeflex/primeflex.css'
 import 'primeicons/primeicons.css'
 import './styles/main.css'
 
