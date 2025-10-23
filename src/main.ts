@@ -1,9 +1,12 @@
+// src/main.ts
 import { createApp } from 'vue'
-import './main.css'
+import './main.css' // Здесь остаются стили .theme-switcher
 import App from './App.vue'
 import PrimeVue from 'primevue/config'
 import Aura from '@primevue/themes/aura'
 import 'primeicons/primeicons.css'
+
+import router from './router' // <-- 1. Импортируем роутер
 
 const app = createApp(App)
 
@@ -12,10 +15,12 @@ app.use(PrimeVue, {
         preset: Aura,
         options: {
             prefix: 'p',
-            darkModeSelector: '.app-dark', // Это ключ к переключению
+            darkModeSelector: '.app-dark',
             cssLayer: false
         }
     }
 })
+
+app.use(router) // <-- 2. Подключаем роутер
 
 app.mount('#app')

@@ -1,0 +1,30 @@
+// src/router/index.ts
+import { createRouter, createWebHistory } from 'vue-router'
+import MainLayout from '@/layouts/MainLayout.vue'
+import HomeView from '@/views/HomeView.vue'
+
+const router = createRouter({
+    history: createWebHistory(import.meta.env.BASE_URL),
+    routes: [
+        {
+            // Все дочерние роуты будут рендериться внутри MainLayout
+            path: '/',
+            component: MainLayout,
+            children: [
+                {
+                    path: '', // Главная страница
+                    name: 'home',
+                    component: HomeView
+                },
+                {
+                    path: 'about', // Страница /about
+                    name: 'about',
+                    // Ленивая загрузка (рекомендуется)
+                    component: () => import('@/views/AboutView.vue')
+                }
+            ]
+        }
+    ]
+})
+
+export default router
