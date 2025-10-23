@@ -1,7 +1,6 @@
 // src/composables/useTheme.ts
-
-import { ref, onMounted, watch, computed }Next, { type Ref } from 'vue'
-import Menu from 'primevue/menu' // Импортируем тип, если нужен для menuRef
+import { ref, onMounted, watch, computed } from 'vue' // <-- ВОТ ИСПРАВЛЕНИЕ
+import Menu from 'primevue/menu'
 import type { MenuItem } from 'primevue/menuitem'
 
 // 1. Определяем наш кастомный тип для темы
