@@ -51,7 +51,7 @@ watch(selectedTheme, (newTheme) => {
 })
 
 // --- Новая логика для выпадающего меню ---
-const menuRef = ref<Menu | null>(null)
+const menuRef = ref<InstanceType<typeof Menu> | null>(null)
 
 // 1. Динамическая иконка для главной кнопки
 const currentThemeIcon = computed(() => {
