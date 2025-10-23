@@ -3,11 +3,8 @@ import { RouterView } from 'vue-router'
 import Button from 'primevue/button'
 import Menu from 'primevue/menu'
 
-// Импортируем нашу вынесенную логику!
 import { useTheme } from '@/composables/useTheme.ts'
 
-// Магия: вся логика (100+ строк) спрятана здесь.
-// Мы получаем только то, что нужно для шаблона.
 const { menuRef, currentThemeIcon, menuItems, toggleMenu } = useTheme()
 </script>
 

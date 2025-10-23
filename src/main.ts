@@ -1,12 +1,11 @@
 // src/main.ts
 import { createApp } from 'vue'
+import router from './router'
 import './styles/main.css' // Здесь остаются стили .theme-switcher
 import App from './App.vue'
 import PrimeVue from 'primevue/config'
 import Aura from '@primevue/themes/aura'
 import 'primeicons/primeicons.css'
-
-import router from './router' // <-- 1. Импортируем роутер
 
 const app = createApp(App)
 
