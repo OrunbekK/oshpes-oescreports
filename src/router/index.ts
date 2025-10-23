@@ -1,6 +1,6 @@
 // src/router/index.ts
 import { createRouter, createWebHistory } from 'vue-router'
-import MainLayout from '@/components/layouts/MainLayout.vue'
+import MainLayout from '@/components/layout/MainLayout.vue'
 import HomeView from '@/pages/HomeView.vue'
 
 const router = createRouter({

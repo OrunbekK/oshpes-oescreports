@@ -1,16 +1,14 @@
-/* Базовые стили для body */
+@import 'primeicons/primeicons.css';
+
+:root {
+    --surface-border: var(--p-surface-border);
+    --text-color: var(--p-text-color);
+    --primary-color: var(--p-primary-color);
+}
+
 body {
     font-family: Arial, sans-serif;
     margin: 0;
     padding: 2rem;
-    /* Плавный переход фона и текста при смене темы */
     transition: background-color 0.3s ease, color 0.3s ease;
-}
-
-/* Стили для позиционирования переключателя */
-.theme-switcher {
-    position: fixed;
-    bottom: 1.5rem; /* Отступ снизу */
-    right: 1.5rem;  /* Отступ справа */
-    z-index: 1000;  /* Поверх других элементов */
 }
