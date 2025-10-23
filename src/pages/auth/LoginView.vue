@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { ref, onMounted } from 'vue'
+import { ref, onMounted, nextTick } from 'vue'
 import { useRouter } from 'vue-router'
 import InputText from 'primevue/inputtext'
 import Password from 'primevue/password'
@@ -13,6 +13,8 @@ const password = ref('')
 const rememberMe = ref(false)
 const isLoading = ref(false)
 const errorMessage = ref('')
+
+const loginInputRef = ref<InstanceType<typeof InputText> | null>(null)
 
 const handleLogin = async () => {
   isLoading.value = true
@@ -33,6 +35,9 @@ const handleLogin = async () => {
     await router.push('/')
   } catch (error) {
     errorMessage.value = 'Неверный логин или пароль'
+    nextTick(() => {
+      loginInputRef.value?.$el?.focus();
+    })
   } finally {
     isLoading.value = false
   }
@@ -70,6 +75,7 @@ onMounted(() => {
           <label for="login">Логин</label>
           <InputText
               id="login"
+              ref="loginInputRef"
               v-model="login"
               type="text"
               placeholder="Введите логин"
@@ -138,7 +144,7 @@ onMounted(() => {
   display: flex;
   flex-direction: column;
   align-items: center;
-  margin-bottom: 2.5rem;
+  margin-bottom: 1.5rem;
 }
 
 .header-icon {
@@ -207,7 +213,7 @@ onMounted(() => {
 
 /* 3. Подвал */
 .login-footer {
-  margin-top: 3rem;
+  margin-top: 2rem;
   text-align: center;
   color: var(--p-text-disabled-color);
   font-size: 0.9rem;
