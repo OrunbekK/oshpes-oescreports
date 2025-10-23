@@ -1,11 +1,5 @@
 @import 'primeicons/primeicons.css';
 
-:root {
-    --surface-border: var(--p-surface-border);
-    --text-color: var(--p-text-color);
-    --primary-color: var(--p-primary-color);
-}
-
 body {
     font-family: Arial, sans-serif;
     margin: 0;
