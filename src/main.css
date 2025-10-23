@@ -1,0 +1,7 @@
+@import 'primeicons/primeicons.css';
+@import '@primevue/themes/aura';
+
+body {
+    margin: 0;
+    padding: 0;
+}
