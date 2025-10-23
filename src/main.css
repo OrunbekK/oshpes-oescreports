@@ -1,2 +1,16 @@
-@import 'primeicons/primeicons.css';
-@import '@primevue/themes/aura';
+/* Базовые стили для body */
+body {
+    font-family: Arial, sans-serif;
+    margin: 0;
+    padding: 2rem;
+    /* Плавный переход фона и текста при смене темы */
+    transition: background-color 0.3s ease, color 0.3s ease;
+}
+
+/* Стили для позиционирования переключателя */
+.theme-switcher {
+    position: fixed;
+    bottom: 1.5rem; /* Отступ снизу */
+    right: 1.5rem;  /* Отступ справа */
+    z-index: 1000;  /* Поверх других элементов */
+}

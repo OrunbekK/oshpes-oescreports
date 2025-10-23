@@ -1,20 +1,21 @@
 import { createApp } from 'vue'
+import './main.css'
+import App from './App.vue'
 import PrimeVue from 'primevue/config'
 import Aura from '@primevue/themes/aura'
-import App from './App.vue'
-import Button from 'primevue/button'
-import Tooltip from 'primevue/tooltip'
+import 'primeicons/primeicons.css'
 
 const app = createApp(App)
 
 app.use(PrimeVue, {
     theme: {
         preset: Aura,
-        options: { darkModeSelector: '.dark' } // позволяет вручную вешать класс
+        options: {
+            prefix: 'p',
+            darkModeSelector: '.app-dark', // Это ключ к переключению
+            cssLayer: false
+        }
     }
 })
-
-app.component('Button', Button)
-app.directive('tooltip', Tooltip)
 
 app.mount('#app')

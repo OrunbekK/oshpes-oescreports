@@ -1,75 +1,107 @@
 <script setup lang="ts">
-import { ref, watch, onMounted } from 'vue'
-import { usePrimeVue } from 'primevue/config'
+import { ref, onMounted, watch, computed } from 'vue'
+import Button from 'primevue/button'
+import Menu from 'primevue/menu'
+import type { MenuItem } from 'primevue/menuitem'
 
+// кастомный тип для темы
 type Theme = 'auto' | 'light' | 'dark'
 
-const PrimeVue = usePrimeVue()
-
-/* ------------- текущая тема ------------- */
-const theme = ref<Theme>('auto')
-
-/* ------------- инициализация ------------- */
-onMounted(() => {
-  const saved = localStorage.getItem('theme') as Theme | null
-  if (saved && ['auto', 'light', 'dark'].includes(saved)) {
-    theme.value = saved
-  } else {
-    theme.value = 'auto'
+const getInitialTheme = (): Theme => {
+  const storedTheme = localStorage.getItem('theme')
+  if (storedTheme === 'light' || storedTheme === 'dark' || storedTheme === 'auto') {
+    return storedTheme
   }
-  applyTheme(theme.value)
-})
-
-/* ------------- применить тему ------------- */
-function applyTheme(t: Theme) {
-  PrimeVue.changeTheme(
-      t === 'dark' ? 'aura-light-green' : 'aura-dark-green', // старая
-      t === 'dark' ? 'aura-dark-green' : 'aura-light-green', // новая
-      'theme-link',
-      () => {}
-  )
-  // CSS-класс для <html> (удобно для ручного CSS)
-  const html = document.documentElement
-  html.classList.remove('light', 'dark')
-  if (t !== 'auto') html.classList.add(t)
+  return 'auto'
 }
 
-/* ------------- переключение ------------- */
-function toggleTheme() {
-  const variants: Theme[] = ['auto', 'light', 'dark']
-  const idx = variants.indexOf(theme.value)
-  theme.value = variants[(idx + 1) % variants.length]
+const selectedTheme = ref<Theme>(getInitialTheme())
+
+const applyTheme = (theme: Theme) => {
+  const systemPrefersDark = window.matchMedia('(prefers-color-scheme: dark)').matches
+  let isDark = false
+
+  if (theme === 'auto') {
+    isDark = systemPrefersDark
+  } else if (theme === 'dark') {
+    isDark = true
+  }
+
+  // Переключаем класс на <html>
+  document.documentElement.classList.toggle('app-dark', isDark)
+  localStorage.setItem('theme', theme)
 }
 
-/* ------------- сохранять выбор ------------- */
-watch(theme, (t) => {
-  localStorage.setItem('theme', t)
-  applyTheme(t)
+// Отслеживаем системные изменения
+const mediaQuery = window.matchMedia('(prefers-color-scheme: dark)')
+const handleMediaChange = (e: MediaQueryListEvent) => {
+  if (selectedTheme.value === 'auto') {
+    document.documentElement.classList.toggle('app-dark', e.matches)
+  }
+}
+
+// Применяем тему при загрузке и при изменении ref
+onMounted(() => {
+  applyTheme(selectedTheme.value)
+  mediaQuery.addEventListener('change', handleMediaChange)
 })
+
+watch(selectedTheme, (newTheme) => {
+  applyTheme(newTheme)
+})
+
+// --- Новая логика для выпадающего меню ---
+const menuRef = ref<Menu | null>(null)
+
+// 1. Динамическая иконка для главной кнопки
+const currentThemeIcon = computed(() => {
+  switch (selectedTheme.value) {
+    case 'light': return 'pi pi-sun'
+    case 'dark': return 'pi pi-moon'
+    default: return 'pi pi-desktop' // 'auto'
+  }
+})
+
+// Модель для всплывающего меню
+// При клике на пункт меню, мы просто меняем selectedTheme.
+// Watcher выше сделает всю остальную работу.
+const menuItems = ref<MenuItem[]>([
+  {
+    label: 'Авто',
+    icon: 'pi pi-desktop',
+    command: () => { selectedTheme.value = 'auto' }
+  },
+  {
+    label: 'Светлая',
+    icon: 'pi pi-sun',
+    command: () => { selectedTheme.value = 'light' }
+  },
+  {
+    label: 'Темная',
+    icon: 'pi pi-moon',
+    command: () => { selectedTheme.value = 'dark' }
+  }
+])
+
+// Функция для открытия/закрытия меню
+const toggleMenu = (event: MouseEvent) => {
+  menuRef.value?.toggle(event)
+}
 </script>
 
 <template>
-  <div class="h-screen flex align-items-center justify-content-center">
-    <h1>Hello world</h1>
+  <h1>Hello world</h1>
+
+  <div class="theme-switcher">
+    <Button
+        :icon="currentThemeIcon"
+        @click="toggleMenu"
+        text
+        rounded
+        aria-label="Переключатель тем"
+        aria-haspopup="true"
+    />
+
+    <Menu ref="menuRef" :model="menuItems" :popup="true" />
   </div>
-
-  <!-- Переключатель темы -->
-  <Button
-      icon="pi pi-palette"
-      rounded
-      aria-label="Switch theme"
-      @click="toggleTheme"
-      v-tooltip.top="`Тема: ${theme}`"
-      class="theme-toggle"
-  />
 </template>
-
-<style scoped>
-/* фиксируем кнопку в правом-нижнем углу */
-.theme-toggle {
-  position: fixed;
-  bottom: 1.5rem;
-  right: 1.5rem;
-  z-index: 999;
-}
-</style>
