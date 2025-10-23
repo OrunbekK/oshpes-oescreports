@@ -21,6 +21,6 @@ app.use(PrimeVue, {
     }
 })
 
-app.use(router) // <-- 2. Подключаем роутер
+app.use(router)
 
 app.mount('#app')
