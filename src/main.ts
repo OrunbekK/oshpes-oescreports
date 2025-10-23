@@ -1,6 +1,6 @@
 // src/main.ts
 import { createApp } from 'vue'
-import './main.css' // Здесь остаются стили .theme-switcher
+import './styles/main.css' // Здесь остаются стили .theme-switcher
 import App from './App.vue'
 import PrimeVue from 'primevue/config'
 import Aura from '@primevue/themes/aura'
