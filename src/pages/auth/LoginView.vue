@@ -35,7 +35,7 @@ const handleLogin = async () => {
     await router.push('/')
   } catch (error) {
     errorMessage.value = 'Неверный логин или пароль'
-    nextTick(() => {
+    await nextTick(() => {
       loginInputRef.value?.$el?.focus();
     })
   } finally {
